@@ -10,7 +10,7 @@ using TagLib;
 
 namespace CloudPlayer.Models
 {
-    class OneDriveScanner
+    class OneDrive
     {
         string accessToken { get; set; }
         
@@ -21,7 +21,7 @@ namespace CloudPlayer.Models
 
 
 
-        public OneDriveScanner()
+        public OneDrive()
         {
             PCA = PublicClientApplicationBuilder.Create(ClientID)
                 .WithRedirectUri($"msal{ClientID}://auth")
@@ -73,7 +73,6 @@ namespace CloudPlayer.Models
                 List<string> audioExtensions = new List<string>();
                 audioExtensions.Add(".flac");
                 audioExtensions.Add(".mp3");
-                List<Tag> fileTags = new List<Tag>();
                 
                 foreach (var item in driveItems)
                 {
@@ -83,11 +82,13 @@ namespace CloudPlayer.Models
                         item.AdditionalData?.TryGetValue(@"@microsoft.graph.downloadUrl", out downloadURL);
                         PartialHTTPStream httpResponseStream = new PartialHTTPStream(downloadURL.ToString(), 100000);
                         TagLib.Tag tag = AudioTagHelper.FileTagReader(httpResponseStream, "test.flac");
-                        fileTags.Add(tag);
+                       
 
                         Track track = new Track();
-                        track.Name = item.Name;
-                        track.Path = downloadURL.ToString();
+                        track.Title = tag.Title;
+                        track.OneDrive_ID = item.Id;
+                        track.FileName = item.Name;
+
 
                         await App.Library.SaveTrack(track);
                     }
@@ -100,5 +101,18 @@ namespace CloudPlayer.Models
             }
         }
 
+        public async Task<string> GetTrackURL(string ID)
+        {
+            DriveItem item = await GraphClient.Me.Drive.Items[ID].Request().GetAsync();
+            Object downloadURL = "";
+            if(item != null)
+            {
+               item.AdditionalData?.TryGetValue(@"@microsoft.graph.downloadUrl", out downloadURL);
+            }
+            return downloadURL.ToString();
+        }
+
     }
+
+
 }

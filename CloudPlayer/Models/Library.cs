@@ -14,6 +14,7 @@ namespace CloudPlayer.Models
         public Library(String dbPath)
         {
             database = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TodoSQLite.db3"));
+            database.DropTableAsync<Track>().Wait();
             database.CreateTableAsync<Track>().Wait();
         }
 

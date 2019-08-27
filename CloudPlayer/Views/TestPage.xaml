@@ -13,6 +13,16 @@
                     BackgroundColor="Gray"
                     >                
             </Button>
+            <Button Text="Clear Libary"
+                    Clicked="ClearLibrary"
+                    BackgroundColor="Gray"
+                    >
+            </Button>
+            <Button Text="Play First Song"
+                Clicked="PlayFirstSong"
+                BackgroundColor="Gray"
+                >
+            </Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
