@@ -21,7 +21,10 @@ namespace CloudPlayer.Views
         private async void ScanOneDrive(object sender, EventArgs e)
         {
             OneDriveScanner scanner = new OneDriveScanner();
-            await scanner.GetToken();            
+            await App.Library.ClearTracks();
+            await scanner.GetToken();
+            await scanner.scanDriveAsync();
+            List<Track> tracks = await App.Library.GetTracks();
         }
     }
 }

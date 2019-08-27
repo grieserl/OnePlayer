@@ -557,3 +557,4 @@ C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.Android\obj\Debug\90\stam
 C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.Android\obj\Debug\90\stamp\_GenerateJavaStubs.stamp
 C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.Android\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.Android\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
+C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.Android\bin\Debug\CloudPlayer.dll.mdb

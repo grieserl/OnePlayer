@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using TagLib;
 
 namespace CloudPlayer.Models
 {
@@ -27,7 +28,7 @@ namespace CloudPlayer.Models
                 .Build();
         }
 
-        public async Task<bool> GetToken()
+        public async Task GetToken()
         {
 
 
@@ -60,37 +61,43 @@ namespace CloudPlayer.Models
                                 new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
                         }
                      ));
-
-            return true;
+        
         }
 
-        public void scanDrive()
+        public async Task scanDriveAsync()
         {
-            //IDriveItemChildrenCollectionPage driveItems = await App.GraphClient.Me.Drive.Root.ItemWithPath("/Music/Audioslave/Audioslave").Children.Request().GetAsync();
+            try
+            {
+                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("/Music/Audioslave/Audioslave").Children.Request().GetAsync();
 
-            //List<string> audioExtensions = new List<string>();
-            //audioExtensions.Add(".flac");
-            //audioExtensions.Add(".mp3");
-            //List<Tag> fileTags = new List<Tag>();
-            //Library library = new Library("/");
-            //foreach (var item in driveItems)
-            //{
-            //    object downloadURL = new object();
-            //    if (audioExtensions.Contains(item.Name.Substring(item.Name.LastIndexOf("."), item.Name.Length - item.Name.LastIndexOf("."))))
-            //    {
-            //        item.AdditionalData?.TryGetValue(@"@microsoft.graph.downloadUrl", out downloadURL);
-            //        PartialHTTPStream httpResponseStream = new PartialHTTPStream(downloadURL.ToString(), 100000);
-            //        TagLib.Tag tag = tags.FileTagReader(httpResponseStream, "test.flac");
-            //        fileTags.Add(tag);
+                List<string> audioExtensions = new List<string>();
+                audioExtensions.Add(".flac");
+                audioExtensions.Add(".mp3");
+                List<Tag> fileTags = new List<Tag>();
+                
+                foreach (var item in driveItems)
+                {
+                    object downloadURL = new object();
+                    if (audioExtensions.Contains(item.Name.Substring(item.Name.LastIndexOf("."), item.Name.Length - item.Name.LastIndexOf("."))))
+                    {
+                        item.AdditionalData?.TryGetValue(@"@microsoft.graph.downloadUrl", out downloadURL);
+                        PartialHTTPStream httpResponseStream = new PartialHTTPStream(downloadURL.ToString(), 100000);
+                        TagLib.Tag tag = AudioTagHelper.FileTagReader(httpResponseStream, "test.flac");
+                        fileTags.Add(tag);
 
-            //        Track track = new Track();
-            //        track.Name = item.Name;
-            //        track.Path = downloadURL.ToString();
+                        Track track = new Track();
+                        track.Name = item.Name;
+                        track.Path = downloadURL.ToString();
 
-            //        library.saveTrack(track);
-            //    }
+                        await App.Library.SaveTrack(track);
+                    }
 
-            //}
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
         }
 
     }

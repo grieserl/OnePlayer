@@ -6,8 +6,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Support.V4.App;
+using Android;
 using Microsoft.Identity.Client;
 using Android.Content;
+
 
 namespace CloudPlayer.Droid
 {
@@ -25,6 +28,8 @@ namespace CloudPlayer.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
             App.ParentWindow = this;
+
+            ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ReadExternalStorage }, 1);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

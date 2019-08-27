@@ -4,12 +4,16 @@ using Xamarin.Forms.Xaml;
 using CloudPlayer.Services;
 using CloudPlayer.Views;
 using Microsoft.Identity.Client;
+using Microsoft.Graph;
+using CloudPlayer.Models;
 
 namespace CloudPlayer
 {
     public partial class App : Application
     {
         public static object ParentWindow { get; set; }
+        public static GraphServiceClient GraphClient;
+        public static Library Library = new Library("/"); 
 
         public App()
         {
