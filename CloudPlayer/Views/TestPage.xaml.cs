@@ -31,7 +31,7 @@ namespace CloudPlayer.Views
 
         private async void ClearLibrary(object sender, EventArgs e)
         {
-            await App.Library.ClearTracks();
+            await App.Library.RecreateTables();
         }
 
         private async void PlayFirstSong(object sender, EventArgs e)

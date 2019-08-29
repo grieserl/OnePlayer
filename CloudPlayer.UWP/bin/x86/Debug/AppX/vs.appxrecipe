@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.UWP\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2019-08-27T19:43:37.284</Modified>
+      <Modified>2019-08-29T18:04:43.684</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.UWP\bin\x86\Debug\CloudPlayer.UWP.exe">
       <PackagePath>entrypoint\CloudPlayer.UWP.exe</PackagePath>
-      <Modified>2019-08-27T19:43:36.370</Modified>
+      <Modified>2019-08-29T18:04:43.137</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\gries\.nuget\packages\microsoft.graph\1.17.0\lib\netstandard1.3\Microsoft.Graph.dll">
       <PackagePath>Microsoft.Graph.dll</PackagePath>
@@ -764,7 +764,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer\bin\Debug\netstandard2.0\CloudPlayer.dll">
       <PackagePath>CloudPlayer.dll</PackagePath>
-      <Modified>2019-08-27T19:43:30.430</Modified>
+      <Modified>2019-08-29T18:04:37.778</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Microsoft\Xamarin\NuGet\win2d.uwp\1.20.0\lib\uap10.0\Microsoft.Graphics.Canvas.winmd">
       <PackagePath>Microsoft.Graphics.Canvas.winmd</PackagePath>
@@ -935,11 +935,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.UWP\bin\x86\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2019-08-27T19:43:36.238</Modified>
+      <Modified>2019-08-29T18:04:43.013</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.UWP\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2019-08-27T19:43:36.238</Modified>
+      <Modified>2019-08-29T18:04:43.014</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.18362.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -955,7 +955,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\inetpub\wwwroot\CloudPlayer\CloudPlayer\CloudPlayer.UWP\bin\x86\Debug\Core\CloudPlayer.UWP.exe">
       <PackagePath>CloudPlayer.UWP.exe</PackagePath>
-      <Modified>2019-08-27T19:43:37.278</Modified>
+      <Modified>2019-08-29T18:04:43.679</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
