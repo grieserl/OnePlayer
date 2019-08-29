@@ -8,6 +8,11 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center"
                      VerticalOptions="Center">
+            <Button Text="Save Settings"
+                    Clicked="SetupSettings"
+                    BackgroundColor="Gray"
+                    >
+            </Button>
             <Button Text="Scan Onedrive"
                     Clicked="ScanOneDrive"
                     BackgroundColor="Gray"

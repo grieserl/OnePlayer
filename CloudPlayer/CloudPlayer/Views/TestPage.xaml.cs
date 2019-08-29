@@ -25,6 +25,7 @@ namespace CloudPlayer.Views
             
             await scanner.GetToken();
             await scanner.scanDriveAsync();
+            App.UserSettings.LastCompletedScanDate = new DateTimeOffset(DateTime.UtcNow);
             await DisplayAlert("Finished Scanning", "", "OK");
             
         }
@@ -32,6 +33,19 @@ namespace CloudPlayer.Views
         private async void ClearLibrary(object sender, EventArgs e)
         {
             await App.Library.RecreateTables();
+            SetupSettings(sender, e);
+
+        }
+
+        public async void SetupSettings (object sender, EventArgs e)
+        {
+            UserSettings settings = new UserSettings();
+            settings.RemoteMusicPath = "Music\\";
+            settings.LastCompletedScanDate = new DateTimeOffset(new DateTime(2019, 02, 28));
+            await App.Library.SaveSettings(settings);
+            App.UserSettings = await App.Library.GetSettings(); 
+
+
         }
 
         private async void PlayFirstSong(object sender, EventArgs e)

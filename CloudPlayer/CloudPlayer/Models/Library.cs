@@ -13,11 +13,11 @@ namespace CloudPlayer.Models
 
         public Library(String dbPath)
         {
-            database = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TodoSQLite2.db3"));
+            database = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CPLibrary.db3"));
             database.CreateTableAsync<Track>().Wait();
             database.CreateTableAsync<Artist>().Wait();
             database.CreateTableAsync<Album>().Wait();
-
+            database.CreateTableAsync<UserSettings>().Wait();
         }
 
         #region [Track]
@@ -82,6 +82,21 @@ namespace CloudPlayer.Models
             database.CreateTableAsync<Track>().Wait();
             database.CreateTableAsync<Artist>().Wait();
             database.CreateTableAsync<Album>().Wait();
+        }
+
+        public async Task SaveSettings(UserSettings settings)
+        {
+            await database.ExecuteAsync("Delete From [UserSettings]");
+            await database.InsertAsync(settings);
+        }
+
+        public async Task<UserSettings> GetSettings()
+        {
+            List<UserSettings> settingsList = await database.QueryAsync<UserSettings>("Select * From [UserSettings]");
+            if (settingsList.Count > 0)
+                return settingsList[0];
+            else
+                return new UserSettings();
         }
     }
 }

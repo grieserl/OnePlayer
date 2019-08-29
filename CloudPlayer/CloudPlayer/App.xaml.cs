@@ -13,7 +13,9 @@ namespace CloudPlayer
     {
         public static object ParentWindow { get; set; }
         public static GraphServiceClient GraphClient;
-        public static Library Library = new Library("/"); 
+        public static Library Library {get;set;}
+        public static Models.UserSettings UserSettings { get; set; }
+         
 
         public App()
         {
@@ -21,11 +23,14 @@ namespace CloudPlayer
 
             DependencyService.Register<MockDataStore>();
             MainPage = new MainPage();
+            
         }
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
             // Handle when your app starts
+            Library = new Library("/");
+            UserSettings = await Library.GetSettings();
         }
 
         protected override void OnSleep()
