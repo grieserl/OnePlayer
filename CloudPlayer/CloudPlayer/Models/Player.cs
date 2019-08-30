@@ -25,9 +25,10 @@ namespace CloudPlayer.Models
             return await DependencyService.Get<PlayMusic>().Play(url);
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
             DependencyService.Get<PlayMusic>().Initialize();
+            Queue = await App.Library.GetQueue();
         }
 
         public async Task LoadQueue()
@@ -35,9 +36,10 @@ namespace CloudPlayer.Models
             Queue = await App.Library.GetQueue();
         }
 
-        public async Task SetQueue(List<Track> tracks, Track nowPlaying = null)
-        {            
+        public async Task SetQueue(List<Track> tracks, bool shuffle, Track nowPlaying = null)
+        {          
             await App.Library.ClearQueue();
+            Queue.Clear();
             foreach(Track track in tracks)
             {
                 Queue queue = new Queue();
@@ -53,9 +55,44 @@ namespace CloudPlayer.Models
                     queue.Position = 0;
                     queue.NowPlaying = false;
                 }
-                await App.Library.AddToQueue(queue);
+                Queue.Add(queue);
             }
-            Queue = await App.Library.GetQueue();
+            if (shuffle)
+                Queue = ShuffleList(Queue);
+            await App.Library.AddAllToQueue(Queue);            
+        }
+
+        public async Task PlayQueueAsync()
+        {
+            if(Queue.Count == 0)
+            {
+                
+            }
+            Queue nowPlaying;
+
+            nowPlaying = Queue.Find(x => x.NowPlaying == true);
+            if(nowPlaying == null)
+                nowPlaying = Queue[0];
+
+            List<Track> tracks = await App.Library.GetTrack(nowPlaying.ID);
+            await Play(tracks[0]);
+        }
+
+
+        private List<E> ShuffleList<E>(List<E> inputList)
+        {
+            List<E> randomList = new List<E>();
+
+            Random r = new Random();
+            int randomIndex = 0;
+            while (inputList.Count > 0)
+            {
+                randomIndex = r.Next(0, inputList.Count); //Choose a random object in the list
+                randomList.Add(inputList[randomIndex]); //add it to the new, random list
+                inputList.RemoveAt(randomIndex); //remove to avoid duplicates
+            }
+
+            return randomList; //return the new random list
         }
     }
 }

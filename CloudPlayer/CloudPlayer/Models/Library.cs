@@ -37,6 +37,11 @@ namespace CloudPlayer.Models
             return database.QueryAsync<Track>("Select * from [Track] Order By [Title]");
         }
 
+        public Task<List<Track>> GetTrack(int? ID)
+        {
+            return database.QueryAsync<Track>($"Select * from [Track] Where ID = {ID}");
+        }
+
         public Task<List<Track>> GetTracks(Artist artist)
         {
             return database.QueryAsync<Track>($"Select * from [Track] Where Artist_ID = {artist.ID} Order By [Title]");
@@ -119,6 +124,16 @@ namespace CloudPlayer.Models
         public async Task AddToQueue(Queue queue)
         {
             await database.InsertAsync(queue);
+        }
+
+        public async Task AddAllToQueue(List<Queue> queue)
+        {
+            await database.InsertAllAsync(queue, true);
+        }
+
+        public async Task<List<Queue>> GetNowPlaying(List<Queue> queue)
+        {
+            return await database.QueryAsync<Queue>("Select * From [Queue]");
         }
 
         public async Task ClearQueue()

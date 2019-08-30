@@ -58,14 +58,16 @@ namespace CloudPlayer.Views
             MyListView.ItemsSource = Items;
         }
 
-        private void PlayAll(object sender, EventArgs e)
+        private async void PlayAll(object sender, EventArgs e)
         {
-
+            await App.Player.SetQueue(Items.ToList(), false);
+            await App.Player.PlayQueueAsync();
         }
 
-        private void ShuffleAll(object sender, EventArgs e)
+        private async void ShuffleAll(object sender, EventArgs e)
         {
-
+            await App.Player.SetQueue(Items.ToList(), true);
+            await App.Player.PlayQueueAsync();
         }
     }
 }
