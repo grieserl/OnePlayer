@@ -32,7 +32,7 @@ namespace CloudPlayer
         protected override async void OnStart()
         {
             // Handle when your app starts
-            Library = new Library("/");
+            Library = new Library();
             UserSettings = await Library.GetSettings();
             Player = new Player();
             Player.Initialize();

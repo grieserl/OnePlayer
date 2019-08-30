@@ -11,13 +11,14 @@ namespace CloudPlayer.Models
     {
         readonly SQLiteAsyncConnection database;
 
-        public Library(String dbPath)
+        public Library()
         {
             database = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CPLibrary.db3"));
             database.CreateTableAsync<Track>().Wait();
             database.CreateTableAsync<Artist>().Wait();
             database.CreateTableAsync<Album>().Wait();
             database.CreateTableAsync<UserSettings>().Wait();
+            database.CreateTableAsync<Queue>().Wait();
         }
 
         #region [Track]
@@ -89,15 +90,7 @@ namespace CloudPlayer.Models
         }
         #endregion
 
-        public async Task RecreateTables()
-        {         
-            database.DropTableAsync<Track>().Wait();
-            database.DropTableAsync<Artist>().Wait();
-            database.DropTableAsync<Album>().Wait();
-            database.CreateTableAsync<Track>().Wait();
-            database.CreateTableAsync<Artist>().Wait();
-            database.CreateTableAsync<Album>().Wait();
-        }
+        #region Settings
 
         public async Task SaveSettings(UserSettings settings)
         {
@@ -113,5 +106,38 @@ namespace CloudPlayer.Models
             else
                 return new UserSettings();
         }
+
+        #endregion
+
+        #region Queue
+
+        public async Task<List<Queue>> GetQueue()
+        {
+            return await database.QueryAsync<Queue>("Select * From [Queue]");
+        }
+
+        public async Task AddToQueue(Queue queue)
+        {
+            await database.InsertAsync(queue);
+        }
+
+        public async Task ClearQueue()
+        {
+            await database.ExecuteAsync("Delete From [Queue]");
+        }
+
+        #endregion
+
+        public async Task RecreateTables()
+        {         
+            database.DropTableAsync<Track>().Wait();
+            database.DropTableAsync<Artist>().Wait();
+            database.DropTableAsync<Album>().Wait();
+            database.CreateTableAsync<Track>().Wait();
+            database.CreateTableAsync<Artist>().Wait();
+            database.CreateTableAsync<Album>().Wait();
+        }
+
+
     }
 }

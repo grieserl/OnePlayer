@@ -58,6 +58,14 @@ namespace CloudPlayer.Views
             MyListView.ItemsSource = Items;
         }
 
+        private void PlayAll(object sender, EventArgs e)
+        {
 
+        }
+
+        private void ShuffleAll(object sender, EventArgs e)
+        {
+
+        }
     }
 }

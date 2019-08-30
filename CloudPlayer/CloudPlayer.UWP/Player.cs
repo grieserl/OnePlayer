@@ -36,5 +36,16 @@ namespace CloudPlayer.UWP
         {
             mediaPlayer = new MediaPlayer();
         }
+
+        public int Stop()
+        {
+            return Pause();
+        }
+
+        public int Pause()
+        {
+            mediaPlayer.Pause();
+            return (int)mediaPlayer.PlaybackSession.Position.TotalMilliseconds;
+        }
     }
 }

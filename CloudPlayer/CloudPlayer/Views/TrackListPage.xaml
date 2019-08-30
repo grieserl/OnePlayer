@@ -5,40 +5,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="CloudPlayer.Views.TrackListPage">
-    <ListView x:Name="MyListView"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement">
-        <!--Built in Cells-->
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
+    <StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Button Text="Play All"
+                    Clicked="PlayAll">                
+            </Button>
+            <Button Text="Shuffle All"
+                    Clicked="ShuffleAll">
+            </Button>
+        </StackLayout>
+        <ListView x:Name="MyListView"
+                ItemsSource="{Binding Items}"
+                ItemTapped="Handle_ItemTapped"
+                CachingStrategy="RecycleElement">
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
 
-                    <Label Text="{Binding Title}"
-                           FontSize="18"
-                           VerticalTextAlignment="Center"
-                           HeightRequest="40"
-                           />
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-
-        <!--Custom View Cells-->
-    <!--
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   d:Text="{Binding .}"
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   d:Text="Detail"
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    -->
-  </ListView>
+                        <Label Text="{Binding Title}"
+                               FontSize="18"
+                               VerticalTextAlignment="Center"
+                               HeightRequest="40"
+                               />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
 </ContentPage>

@@ -49,11 +49,9 @@ namespace CloudPlayer.Views
 
         }
 
-        private async void PlayFirstSong(object sender, EventArgs e)
+        private async void Pause(object sender, EventArgs e)
         {
-            List<Track> tracks = await App.Library.GetTracks();
-            string url = await scanner.GetTrackURL(tracks[0].OneDrive_ID);
-            bool test = await DependencyService.Get<PlayMusic>().Play(url);
+            int test = DependencyService.Get<PlayMusic>().Pause();
         }
 
 

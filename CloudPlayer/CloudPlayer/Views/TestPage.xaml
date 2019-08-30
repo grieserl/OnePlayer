@@ -23,8 +23,8 @@
                     BackgroundColor="Gray"
                     >
             </Button>
-            <Button Text="Play First Song"
-                Clicked="PlayFirstSong"
+            <Button Text="Pause"
+                Clicked="Pause"
                 BackgroundColor="Gray"
                 >
             </Button>

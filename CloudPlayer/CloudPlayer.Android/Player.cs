@@ -52,6 +52,18 @@ namespace CloudPlayer.Droid
             return taskCompletionSource.Task;
         }
 
+        public int Stop()
+        {
+            mediaPlayer.Stop();
+            return mediaPlayer.CurrentPosition;
+        }
+
+        public int Pause()
+        {
+            mediaPlayer.Pause();
+            return mediaPlayer.CurrentPosition;
+        }
+
         public void Initialize()
         {
             mediaPlayer = new MediaPlayer();
