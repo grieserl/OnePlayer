@@ -21,8 +21,8 @@ namespace CloudPlayer.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Test, Title="Test"},
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.Artists, Title="Artists"},
+                new HomeMenuItem {Id = MenuItemType.Tracks, Title="Songs"},
             };
 
             ListViewMenu.ItemsSource = menuItems;

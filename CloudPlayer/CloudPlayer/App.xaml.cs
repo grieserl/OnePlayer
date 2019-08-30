@@ -6,6 +6,7 @@ using CloudPlayer.Views;
 using Microsoft.Identity.Client;
 using Microsoft.Graph;
 using CloudPlayer.Models;
+using System.Threading.Tasks;
 
 namespace CloudPlayer
 {
@@ -15,6 +16,8 @@ namespace CloudPlayer
         public static GraphServiceClient GraphClient;
         public static Library Library {get;set;}
         public static Models.UserSettings UserSettings { get; set; }
+        public static Player Player { get; set; }
+        public static OneDrive OneDrive { get; set; }
          
 
         public App()
@@ -31,6 +34,10 @@ namespace CloudPlayer
             // Handle when your app starts
             Library = new Library("/");
             UserSettings = await Library.GetSettings();
+            Player = new Player();
+            Player.Initialize();
+            OneDrive = new OneDrive();
+            await OneDrive.GetToken();
         }
 
         protected override void OnSleep()

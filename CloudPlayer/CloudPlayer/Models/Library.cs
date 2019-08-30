@@ -33,7 +33,17 @@ namespace CloudPlayer.Models
 
         public Task<List<Track>> GetTracks()
         {
-            return database.QueryAsync<Track>("Select * from [Track]");
+            return database.QueryAsync<Track>("Select * from [Track] Order By [Title]");
+        }
+
+        public Task<List<Track>> GetTracks(Artist artist)
+        {
+            return database.QueryAsync<Track>($"Select * from [Track] Where Artist_ID = {artist.ID} Order By [Title]");
+        }
+
+        public Task<List<Track>> GetTracks(Album album)
+        {
+            return database.QueryAsync<Track>($"Select * from [Track] Where Album_ID = {album.ID} Order By [Title]");
         }
 
         public async Task<List<Track>> GetTrackByOneDrive_ID(string OneDrive_ID)
@@ -52,6 +62,11 @@ namespace CloudPlayer.Models
         {
             return await database.QueryAsync<Artist>($@"Select * from [Artist] where Name = '{name}'");
         }
+
+        public async Task<List<Artist>> GetArtists()
+        {
+            return await database.QueryAsync<Artist>($@"Select * from [Artist]");
+        }    
 
         public async Task SaveArtist(Artist artist)
         {

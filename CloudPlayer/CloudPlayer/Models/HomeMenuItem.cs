@@ -7,6 +7,8 @@ namespace CloudPlayer.Models
     public enum MenuItemType
     {
         Test,
+        Artists,
+        Tracks,
         Browse,
         About
     }

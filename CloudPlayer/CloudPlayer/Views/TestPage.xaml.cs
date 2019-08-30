@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using static CloudPlayer.Models.Player;
 
 namespace CloudPlayer.Views
 {
@@ -55,10 +56,6 @@ namespace CloudPlayer.Views
             bool test = await DependencyService.Get<PlayMusic>().Play(url);
         }
 
-        public interface PlayMusic
-        {
-            Task<bool> Play(string filePath);
-            Task<bool> SetVolume(float left, float right);
-        }
+
     }
 }

@@ -16,7 +16,7 @@
   <Properties>
     <DisplayName>CloudPlayer.UWP</DisplayName>
     <PublisherDisplayName>bf1e6e1a-2b59-4c01-859d-97b09c6db6de</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>icon.png</Logo>
   </Properties>
 
   <Dependencies>

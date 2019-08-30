@@ -7,7 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudPlayer.UWP", "CloudPla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudPlayer.Android", "CloudPlayer\CloudPlayer.Android\CloudPlayer.Android.csproj", "{4C49E3FB-125A-4182-8ED2-941666050AC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudPlayer", "CloudPlayer\CloudPlayer\CloudPlayer.csproj", "{68651BA2-26B4-4BD3-A619-0FBC60BD6226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudPlayer", "CloudPlayer\CloudPlayer\CloudPlayer.csproj", "{68651BA2-26B4-4BD3-A619-0FBC60BD6226}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5EA37722-E4D4-4051-947D-D507E74A52C4}"
+	ProjectSection(SolutionItems) = preProject
+		CloudPlayer\Icon.png = CloudPlayer\Icon.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

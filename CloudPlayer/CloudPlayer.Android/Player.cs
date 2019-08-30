@@ -16,6 +16,7 @@ using Xamarin.Forms;
 using CloudPlayer.Droid;
 using CloudPlayer.Views;
 using static CloudPlayer.Views.TestPage;
+using static CloudPlayer.Models.Player;
 
 [assembly: Dependency(typeof(PlayMusic_Android))]
 namespace CloudPlayer.Droid
@@ -32,7 +33,8 @@ namespace CloudPlayer.Droid
 
         public Task<bool> Play(string filePath)
         {
-
+            if (mediaPlayer.IsPlaying)
+                mediaPlayer.Reset();
             mediaPlayer.SetDataSource(filePath);
             mediaPlayer.Prepare();
 
@@ -48,6 +50,11 @@ namespace CloudPlayer.Droid
             TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
             taskCompletionSource.SetResult(true);
             return taskCompletionSource.Task;
+        }
+
+        public void Initialize()
+        {
+            mediaPlayer = new MediaPlayer();
         }
     }
 }

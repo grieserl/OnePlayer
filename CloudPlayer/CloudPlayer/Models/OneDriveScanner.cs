@@ -11,7 +11,7 @@ using TagLib;
 
 namespace CloudPlayer.Models
 {
-    class OneDrive
+    public class OneDrive
     {
         string accessToken { get; set; }
         

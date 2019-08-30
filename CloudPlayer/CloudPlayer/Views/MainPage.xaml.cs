@@ -33,11 +33,11 @@ namespace CloudPlayer.Views
                     case (int)MenuItemType.Test:
                         MenuPages.Add(id, new NavigationPage(new TestPage()));
                         break;
-                    case (int)MenuItemType.Browse:
-                        MenuPages.Add(id, new NavigationPage(new ItemsPage()));
+                    case (int)MenuItemType.Artists:
+                        MenuPages.Add(id, new NavigationPage(new ArtistListPage()));
                         break;
-                    case (int)MenuItemType.About:
-                        MenuPages.Add(id, new NavigationPage(new AboutPage()));
+                    case (int)MenuItemType.Tracks:
+                        MenuPages.Add(id, new NavigationPage(new TrackListPage()));
                         break;
                 }
             }
