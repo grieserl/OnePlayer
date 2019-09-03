@@ -12,15 +12,11 @@ using TagLib;
 namespace CloudPlayer.Models
 {
     public class OneDrive
-    {
-        string accessToken { get; set; }
-        
+    {      
         public static IPublicClientApplication PCA = null;
         public static string[] Scopes = { "User.Read", "files.readwrite.all" };
         public static string ClientID = "e3cd9192-2df0-4636-8a9a-49810911e671";
         public static GraphServiceClient GraphClient;
-
-
 
         public OneDrive()
         {
@@ -29,10 +25,12 @@ namespace CloudPlayer.Models
                 .Build();
         }
 
+        /// <summary>
+        ///     Authenticate and get access token for onedrive
+        /// </summary>
+        /// <returns></returns>
         public async Task GetToken()
         {
-
-
             AuthenticationResult authResult = null;
             IEnumerable<IAccount> accounts = await PCA.GetAccountsAsync();
             try
@@ -46,14 +44,12 @@ namespace CloudPlayer.Models
                 try
                 {
                     authResult = await PCA.AcquireTokenInteractive(Scopes).WithParentActivityOrWindow(App.ParentWindow).ExecuteAsync();
-                    accessToken = authResult.AccessToken;
                 }
                 catch (Exception ex2)
                 {
 
                 }
             }
-
             GraphClient = new GraphServiceClient(new DelegateAuthenticationProvider(
                         async (request) =>
                         {
@@ -61,20 +57,18 @@ namespace CloudPlayer.Models
                             request.Headers.Authorization =
                                 new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
                         }
-                     ));
-        
+                     ));        
         }
 
-        public async Task scanDriveAsync()
+        /// <summary>
+        ///     Temp method for getting files in the music folder in onedrive, will be replaced with user definable path.
+        /// </summary>
+        /// <returns></returns>
+        public async Task scanDrive()
         {
             try
             {
-
-
-                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("Music/").Children.Request().GetAsync();           
-
-               
-                
+                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("Music/").Children.Request().GetAsync();
                 
                 foreach (var item in driveItems)
                 {
@@ -87,6 +81,11 @@ namespace CloudPlayer.Models
             }
         }
 
+        /// <summary>
+        ///     Recursively scan the onedrive folder path for music files and add them to the library
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public async Task ScanFolder(string path)
         {
             IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.ItemWithPath(path).Children.Request().GetAsync();
@@ -102,6 +101,11 @@ namespace CloudPlayer.Models
             }
         }
 
+        /// <summary>
+        ///     Get track metadata and save it to the library
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task SaveTrackToLibrary(DriveItem item)
         {
             try
@@ -122,12 +126,14 @@ namespace CloudPlayer.Models
                     Track track = new Track();
                     track.Title = tag.Title;
                     track.Year = (int)tag.Year;
+                    track.TrackNumber = (int)tag.Track;
+                    track.DiscNumber = (int)tag.Disc;
                     track.OneDrive_ID = item.Id;
                     track.FileName = item.Name;
-                    track.lastUpdate = item.LastModifiedDateTime;
+                    track.LastUpdate = item.LastModifiedDateTime;
 
                     List<Track> tracks = (await App.Library.GetTrackByOneDrive_ID(item.Id));
-                    if (tracks.Count() == 0 || tracks[0].lastUpdate < track.lastUpdate)
+                    if (tracks.Count() == 0 || tracks[0].LastUpdate < track.LastUpdate)
                     {
                         List<Artist> artists = await App.Library.GetArtistByName(tag.Artists.First());
                         if (artists.Count() == 0)
@@ -164,7 +170,7 @@ namespace CloudPlayer.Models
                         else
                             track.Album_ID = albums[0].ID;
 
-                        if (tracks.Count() > 0 && tracks[0].lastUpdate < track.lastUpdate)
+                        if (tracks.Count() > 0 && tracks[0].LastUpdate < track.LastUpdate)
                         {
                             track.ID = tracks[0].ID;
                             await App.Library.UpdateTrack(track);
@@ -179,9 +185,16 @@ namespace CloudPlayer.Models
 
             }
         }
-           
+        public async Task saveArtwork(IPicture artwork)
+        {
 
+        }     
 
+        /// <summary>
+        ///     Get the download URL for a onedrive track
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public async Task<string> GetTrackURL(string ID)
         {
             DriveItem item = await GraphClient.Me.Drive.Items[ID].Request().GetAsync();

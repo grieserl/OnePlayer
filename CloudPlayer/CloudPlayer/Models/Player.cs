@@ -8,34 +8,43 @@ namespace CloudPlayer.Models
 {
     public class Player
     {
-
         public List<Queue> Queue { get; set; }
         public interface PlayMusic
         {
-            Task<bool> Play(string filePath);
+            void Play(string filePath);
             Task<bool> SetVolume(float left, float right);
             int Stop();
             int Pause();
-            void Initialize();
         }
+
+        /// <summary>
+        ///     Start playing a track by getting the download URL from onedrive and passing it to the native MediaPlayer
+        /// </summary>
+        /// <param name="track"></param>
+        /// <returns></returns>
         public async Task<bool> Play(Track track)
-        {
-            
+        {            
             string url = await App.OneDrive.GetTrackURL(track.OneDrive_ID);
-            return await DependencyService.Get<PlayMusic>().Play(url);
+            DependencyService.Get<PlayMusic>().Play(url);
+            return true;
         }
 
-        public async Task Initialize()
-        {
-            DependencyService.Get<PlayMusic>().Initialize();
-            Queue = await App.Library.GetQueue();
-        }
-
+        /// <summary>
+        ///     Load the audio queue from the library
+        /// </summary>
+        /// <returns></returns>
         public async Task LoadQueue()
         {
             Queue = await App.Library.GetQueue();
         }
 
+        /// <summary>
+        ///     Set and syncronize the audio queue with the library queue
+        /// </summary>
+        /// <param name="tracks"></param>
+        /// <param name="shuffle"></param>
+        /// <param name="nowPlaying"></param>
+        /// <returns></returns>
         public async Task SetQueue(List<Track> tracks, bool shuffle, Track nowPlaying = null)
         {          
             await App.Library.ClearQueue();
@@ -62,6 +71,10 @@ namespace CloudPlayer.Models
             await App.Library.AddAllToQueue(Queue);            
         }
 
+        /// <summary>
+        ///     IN PROGRESS - Start playing the audio queue
+        /// </summary>
+        /// <returns></returns>
         public async Task PlayQueueAsync()
         {
             if(Queue.Count == 0)
@@ -78,7 +91,12 @@ namespace CloudPlayer.Models
             await Play(tracks[0]);
         }
 
-
+        /// <summary>
+        ///     Used to shuffle the queue
+        /// </summary>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="inputList"></param>
+        /// <returns></returns>
         private List<E> ShuffleList<E>(List<E> inputList)
         {
             List<E> randomList = new List<E>();

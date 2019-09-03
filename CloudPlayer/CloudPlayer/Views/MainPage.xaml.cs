@@ -39,6 +39,9 @@ namespace CloudPlayer.Views
                     case (int)MenuItemType.Tracks:
                         MenuPages.Add(id, new NavigationPage(new TrackListPage()));
                         break;
+                    case (int)MenuItemType.NowPlaying:
+                        MenuPages.Add(id, new NavigationPage(new NowPlayingPage()));
+                        break;
                 }
             }
 

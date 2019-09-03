@@ -25,7 +25,7 @@ namespace CloudPlayer.Views
            
             
             await scanner.GetToken();
-            await scanner.scanDriveAsync();
+            await scanner.scanDrive();
             App.UserSettings.LastCompletedScanDate = new DateTimeOffset(DateTime.UtcNow);
             await DisplayAlert("Finished Scanning", "", "OK");
             

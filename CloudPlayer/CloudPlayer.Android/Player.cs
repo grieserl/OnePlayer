@@ -30,8 +30,11 @@ namespace CloudPlayer.Droid
             mediaPlayer = new MediaPlayer();
         }
 
-
-        public Task<bool> Play(string filePath)
+        /// <summary>
+        ///     Play the audio file located at the filePath
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void Play(string filePath)
         {
             if (mediaPlayer.IsPlaying)
                 mediaPlayer.Reset();
@@ -39,9 +42,8 @@ namespace CloudPlayer.Droid
             mediaPlayer.Prepare();
 
             mediaPlayer.Start();
-            TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
-            taskCompletionSource.SetResult(true);
-            return taskCompletionSource.Task;
+
+
         }
 
         public Task<bool> SetVolume(float left, float right)
@@ -62,11 +64,6 @@ namespace CloudPlayer.Droid
         {
             mediaPlayer.Pause();
             return mediaPlayer.CurrentPosition;
-        }
-
-        public void Initialize()
-        {
-            mediaPlayer = new MediaPlayer();
         }
     }
 }

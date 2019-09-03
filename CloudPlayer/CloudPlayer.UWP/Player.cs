@@ -1,40 +1,43 @@
-﻿using System;
+﻿using NAudio.Wave;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Networking.BackgroundTransfer;
+using Windows.Storage;
 using Xamarin.Forms;
 using static CloudPlayer.Models.Player;
+using static System.Net.WebRequestMethods;
 
 [assembly: Dependency(typeof(CloudPlayer.UWP.PlayMusic_UWP))]
 namespace CloudPlayer.UWP
 {
     public class PlayMusic_UWP : PlayMusic
-    {
+    { 
         MediaPlayer mediaPlayer { get; set; }
 
         public PlayMusic_UWP()
         {
             mediaPlayer = new MediaPlayer();
         }
-        public async Task<bool> Play(string filePath)
-        {
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(filePath));
+
+        /// <summary>
+        ///     Play the audio file located at the filePath
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void Play(string filePath)
+        {            
+            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(filePath));           
             mediaPlayer.Play();
-            return true;
-
-        }
-
+        }  
         public Task<bool> SetVolume(float left, float right)
         {
             throw new NotImplementedException();
-        }
-
-        public void Initialize()
-        {
-            mediaPlayer = new MediaPlayer();
         }
 
         public int Stop()

@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Graph" Version="1.17.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.3.1" />
+    <PackageReference Include="NAudio" Version="1.9.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.1.0.555618" />  
@@ -19,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\NowPlayingPage.xaml.cs">
+      <DependentUpon>NowPlayingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TrackListPage.xaml.cs">
       <DependentUpon>TrackListPage.xaml</DependentUpon>
     </Compile>
@@ -26,6 +30,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Views\ArtistListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\NowPlayingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TestPage.xaml">

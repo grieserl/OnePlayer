@@ -10,6 +10,7 @@ namespace CloudPlayer.Models
         Artists,
         Tracks,
         Browse,
+        NowPlaying,
         About
     }
     public class HomeMenuItem

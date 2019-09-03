@@ -6,6 +6,9 @@ using System.Text;
 
 namespace CloudPlayer.Models
 {
+    /// <summary>
+    ///     Used to provide a read seekable stream for TagLib to get audio file metadata without downloading the whole file.
+    /// </summary>
     class PartialHTTPStream : Stream
     {
         private readonly Int64 cacheLength = 1024;

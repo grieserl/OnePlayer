@@ -67,29 +67,5 @@ namespace CloudPlayer.Models
             //Return the tags
             return tags;
         }
-
-        public static Stream FileTagEditor(Stream stream, string fileName, TagLib.Tag newTag)
-        {
-            //Create a simple file and simple file abstraction
-            var simpleFile = new SimpleFile(fileName, stream);
-            var simpleFileAbstraction = new SimpleFileAbstraction(simpleFile);
-            /////////////////////
-
-            //Create a taglib file from the simple file abstraction
-            var mp3File = TagLib.File.Create(simpleFileAbstraction);
-
-            //Copy the all the tags to the file (overwrite if exist)
-            newTag.CopyTo(mp3File.Tag, true);
-            //Pictures tag had to be done seperately
-            //During testing sometimes it didn't copy
-            mp3File.Tag.Pictures = newTag.Pictures;
-
-            //save it and close it
-            mp3File.Save();
-            mp3File.Dispose();
-
-            //Return the stream back (now edited with the new tags)
-            return stream;
-        }
     }
 }

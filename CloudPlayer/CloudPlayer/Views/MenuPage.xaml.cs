@@ -23,6 +23,7 @@ namespace CloudPlayer.Views
                 new HomeMenuItem {Id = MenuItemType.Test, Title="Test"},
                 new HomeMenuItem {Id = MenuItemType.Artists, Title="Artists"},
                 new HomeMenuItem {Id = MenuItemType.Tracks, Title="Songs"},
+                new HomeMenuItem {Id = MenuItemType.NowPlaying, Title="Now Playing"}
             };
 
             ListViewMenu.ItemsSource = menuItems;

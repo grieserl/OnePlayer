@@ -35,7 +35,6 @@ namespace CloudPlayer
             Library = new Library();
             UserSettings = await Library.GetSettings();
             Player = new Player();
-            Player.Initialize();
             OneDrive = new OneDrive();
             await OneDrive.GetToken();
         }
