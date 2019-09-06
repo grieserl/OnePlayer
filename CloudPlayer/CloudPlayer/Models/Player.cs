@@ -8,9 +8,7 @@ namespace CloudPlayer.Models
 {
     public class Player
     {
-        public List<Queue> Queue { get; set; }
-        public Track NowPlaying { get; set; }
-        public string ArtworkPath { get;set; }
+        public List<QueueItem> Queue { get; set; }        
         
         public interface PlayMusic
         {
@@ -29,7 +27,6 @@ namespace CloudPlayer.Models
         {            
             string url = await App.OneDrive.GetTrackURL(track.OneDrive_ID);
             DependencyService.Get<PlayMusic>().Play(url, postition);
-            NowPlaying = track;
             return true;
         }
 
@@ -39,89 +36,69 @@ namespace CloudPlayer.Models
         /// <returns></returns>
         public async Task LoadQueue()
         {
-            Queue = await App.Library.GetQueue();
+            Queue = await App.Library.GetQueueItems();
         }
 
-        /// <summary>
-        ///     Set and syncronize the audio queue with the library queue
-        /// </summary>
-        /// <param name="tracks"></param>
-        /// <param name="shuffle"></param>
-        /// <param name="nowPlaying"></param>
-        /// <returns></returns>
-        public async Task SetQueue(List<Track> tracks, bool shuffle, Track nowPlaying = null)
-        {          
-
-            await App.Library.ClearQueue();
-            if (Queue != null)
-                Queue.Clear();
-            else
-                Queue = new List<Queue>();
-            foreach(Track track in tracks)
+        public async Task SetQueue(List<Track> tracks, int nowPlaying, int postition)
+        {
+            Queue = new List<QueueItem>();
+            for(int i = 0; i < tracks.Count; i++)
             {
-                Queue queue = new Queue();
-                if (track == nowPlaying)
+                QueueItem queueItem = new QueueItem();
+                queueItem.track_ID = tracks[i].ID;
+                queueItem.AlbumArtPath = await GetAlbumArtPath(tracks[i].Album_ID);
+                if (i == nowPlaying)
                 {
-                    queue.ID = track.ID;
-                    queue.Position = 0;
-                    queue.NowPlaying = true;
+                    queueItem.NowPlaying = true;
+                    queueItem.Position = postition;                    
                 }
                 else
                 {
-                    queue.ID = track.ID;
-                    queue.Position = 0;
-                    queue.NowPlaying = false;
+                    queueItem.NowPlaying = false;
+                    queueItem.Position = 0;
                 }
-                Queue.Add(queue);
+                Queue.Add(queueItem);
             }
-            if (shuffle)
-                Queue = ShuffleList(Queue);
-            await App.Library.AddAllToQueue(Queue);
-            if (nowPlaying == null)
-                NowPlaying = tracks[0];
-            else
-                NowPlaying = nowPlaying;
-            await SetArtworkPath(NowPlaying);
         }
 
-        /// <summary>
-        ///     Start playing the audio queue
-        /// </summary>
-        /// <returns></returns>
-        public async Task PlayQueue()
+        public async Task SetQueue(List<Track> tracks)
         {
-            if(Queue == null || Queue.Count == 0)
-            {
-                await SetQueue(await App.Library.GetTracks(), false, null);
-            }
-            Queue nowPlaying;
-
-            nowPlaying = Queue.Find(x => x.NowPlaying == true);
-            if(nowPlaying == null)
-                nowPlaying = Queue[0];
-
-            List<Track> tracks = await App.Library.GetTrack(nowPlaying.ID);
+            await SetQueue(tracks, 0, 0);
         }
 
-        public async Task CheckInitialization()
+        public async Task SetQueue()
         {
-           if(Queue == null)
-           {
-                await PlayQueue();
-           }
-           if(NowPlaying == null)
+            await SetQueue(await App.Library.GetTracks());
+        }
+
+        public async Task<QueueItem> GetNowPlaying()
+        {
+            QueueItem nowPlaying;
+            if(Queue != null && Queue.Count > 0)
             {
-                Queue queue = Queue.Find(x => x.NowPlaying == true);
-                if(queue == null)
+                nowPlaying = Queue.Find(x => x.NowPlaying);
+                if(nowPlaying == null)
                 {
-                    queue = Queue[0];
+                    nowPlaying = Queue[0];
                 }
-                List<Track> tracks = await App.Library.GetTrack(queue.ID);
-                NowPlaying = tracks[0];
-
+                return nowPlaying;
+            }
+            else
+            {
+                await SetQueue();
+                return Queue[0];
             }
         }
-        
+
+        public async Task<string> GetAlbumArtPath(int id)
+        {
+            List<Album> albums = await App.Library.GetAlbum(id);
+            if (albums.Count > 0)
+                return albums[0].ArtworkFile;
+            else
+                return "1.jpeg";
+        }
+      
 
         /// <summary>
         ///     Used to shuffle the queue
@@ -143,15 +120,6 @@ namespace CloudPlayer.Models
             }
 
             return randomList; //return the new random list
-        }
-
-        public async Task SetArtworkPath(Track track)
-        {
-            List<Album> albums = await App.Library.GetAlbum(track.Album_ID);
-            if (albums.Count > 0)
-                ArtworkPath = albums[0].ArtworkFile;
-            else
-                ArtworkPath = App.LocalStoragePath + "\\AlbumArt\\1.jpeg";
         }
     }
 }

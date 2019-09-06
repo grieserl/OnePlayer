@@ -45,6 +45,7 @@ namespace CloudPlayer
             Player = new Player();
             OneDrive = new OneDrive();
             await OneDrive.GetToken();
+            Player.GetNowPlaying();
             
         }
 

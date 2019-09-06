@@ -18,7 +18,7 @@ namespace CloudPlayer.Models
             database.CreateTableAsync<Artist>().Wait();
             database.CreateTableAsync<Album>().Wait();
             database.CreateTableAsync<UserSettings>().Wait();
-            database.CreateTableAsync<Queue>().Wait();
+            database.CreateTableAsync<QueueItem>().Wait();
         }
 
         #region [Track]
@@ -126,29 +126,25 @@ namespace CloudPlayer.Models
 
         #region Queue
 
-        public async Task<List<Queue>> GetQueue()
+        public async Task<List<QueueItem>> GetQueueItems()
         {
-            return await database.QueryAsync<Queue>("Select * From [Queue]");
+            return await database.QueryAsync<QueueItem>("Select * From [QueueItem]");
         }
 
-        public async Task AddToQueue(Queue queue)
+        public async Task AddToQueue(QueueItem queue)
         {
             await database.InsertAsync(queue);
         }
 
-        public async Task AddAllToQueue(List<Queue> queue)
+        public async Task AddAllToQueue(List<QueueItem> queue)
         {
             await database.InsertAllAsync(queue, true);
         }
 
-        public async Task<List<Queue>> GetNowPlaying(List<Queue> queue)
-        {
-            return await database.QueryAsync<Queue>("Select * From [Queue]");
-        }
 
         public async Task ClearQueue()
         {
-            await database.ExecuteAsync("Delete From [Queue]");
+            await database.ExecuteAsync("Delete From [QueueItem]");
         }
 
         #endregion

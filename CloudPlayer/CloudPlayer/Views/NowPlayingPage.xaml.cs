@@ -15,15 +15,18 @@ namespace CloudPlayer.Views
 
         public NowPlayingPage()
         {
-            InitializeComponent();
+            InitializeComponent();          
             
-            AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", App.Player.ArtworkPath)); 
-            
+        }
+
+        protected override async void OnAppearing()
+        {
+            AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", (await App.Player.GetNowPlaying()).AlbumArtPath));
         }
 
         public async Task Play()
         {
-            await App.Player.PlayQueue();
+           
         }
 
         public void SetAlbumArt()

@@ -60,14 +60,14 @@ namespace CloudPlayer.Views
 
         private async void PlayAll(object sender, EventArgs e)
         {
-            App.Player.SetQueue(Items.ToList(), false);
-            await App.Player.PlayQueue();
+            //App.Player.SetQueue(Items.ToList(), false);
+            //await App.Player.PlayQueue();
         }
 
         private async void ShuffleAll(object sender, EventArgs e)
         {
-            App.Player.SetQueue(Items.ToList(), true);
-            await App.Player.PlayQueue();
+            //App.Player.SetQueue(Items.ToList(), true);
+            //await App.Player.PlayQueue();
         }
     }
 }
