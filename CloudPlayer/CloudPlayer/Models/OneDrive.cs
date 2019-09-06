@@ -3,11 +3,14 @@ using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using TagLib;
+using Windows.Graphics.Imaging;
+using HeyRed.Mime;
 
 namespace CloudPlayer.Models
 {
@@ -68,7 +71,7 @@ namespace CloudPlayer.Models
         {
             try
             {
-                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("Music/").Children.Request().GetAsync();
+                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("STP/").Children.Request().GetAsync();
                 
                 foreach (var item in driveItems)
                 {
@@ -91,7 +94,7 @@ namespace CloudPlayer.Models
             IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.ItemWithPath(path).Children.Request().GetAsync();
             foreach (var item in driveItems)
             {
-                DateTimeOffset offset = new DateTimeOffset(new DateTime(2019, 02, 28));
+                DateTimeOffset offset = new DateTimeOffset(new DateTime(2012, 07, 28));
                 Debug.WriteLine(path);
                 if (item.Folder != null)
                     await ScanFolder(item.ParentReference.Path + "/" + item.Name + "/");
@@ -131,6 +134,7 @@ namespace CloudPlayer.Models
                     track.OneDrive_ID = item.Id;
                     track.FileName = item.Name;
                     track.LastUpdate = item.LastModifiedDateTime;
+                    
 
                     List<Track> tracks = (await App.Library.GetTrackByOneDrive_ID(item.Id));
                     if (tracks.Count() == 0 || tracks[0].LastUpdate < track.LastUpdate)
@@ -162,9 +166,11 @@ namespace CloudPlayer.Models
                             {
                                 album.AlbumArtist_ID = albumArtists.First().ID;
                             }
-                            album.Title = tag.Album;
-                            await App.Library.SaveAlbum(album);
-                            track.Album_ID = album.ID;
+                            album.Title = tag.Album;                            
+                            await App.Library.InsertAlbum(album);
+                            album.ArtworkFile = await saveArtwork(tag, album.ID);
+                            await App.Library.UpdateAlbum(album);
+                            track.Album_ID = album.ID;                          
 
                         }
                         else
@@ -177,6 +183,7 @@ namespace CloudPlayer.Models
                         }
                         else
                             await App.Library.SaveTrack(track);
+
                     }
                 }
             }
@@ -185,9 +192,17 @@ namespace CloudPlayer.Models
 
             }
         }
-        public async Task saveArtwork(IPicture artwork)
-        {
+        public async Task<string> saveArtwork(TagLib.Tag tag, int id)        {
 
+            IPicture picture = tag.Pictures[0];
+            ByteVector vector = picture.Data;
+            Byte[] bytes = vector.ToArray();
+            string extension = MimeTypesMap.GetExtension(picture.MimeType);
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt"));
+            var filename = System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", id.ToString()+ "."+ extension) ;
+
+            System.IO.File.WriteAllBytes(filename, bytes);
+            return id.ToString() + "." + extension;
         }     
 
         /// <summary>

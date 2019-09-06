@@ -10,7 +10,7 @@ using Android.Support.V4.App;
 using Android;
 using Microsoft.Identity.Client;
 using Android.Content;
-
+using Android.Support.V4.Content;
 
 namespace CloudPlayer.Droid
 {
@@ -23,13 +23,13 @@ namespace CloudPlayer.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
+            ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, 1);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
             App.ParentWindow = this;
 
-            ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ReadExternalStorage }, 1);
+            
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -42,6 +42,15 @@ namespace CloudPlayer.Droid
         {
             base.OnActivityResult(requestCode, resultCode, data);
             AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
+        }
+
+        public void RequestPermissions()
+        {
+            if (!(ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(Android.App.Application.Context, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted))
+            {
+                
+            }
+           
         }
     }
 }

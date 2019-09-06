@@ -34,12 +34,13 @@ namespace CloudPlayer.Droid
         ///     Play the audio file located at the filePath
         /// </summary>
         /// <param name="filePath"></param>
-        public void Play(string filePath)
+        public void Play(string filePath, int position)
         {
             if (mediaPlayer.IsPlaying)
                 mediaPlayer.Reset();
             mediaPlayer.SetDataSource(filePath);
             mediaPlayer.Prepare();
+            mediaPlayer.SeekTo(position);
 
             mediaPlayer.Start();
 

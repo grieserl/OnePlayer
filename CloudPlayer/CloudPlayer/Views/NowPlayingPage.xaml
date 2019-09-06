@@ -7,10 +7,27 @@
              x:Class="CloudPlayer.Views.NowPlayingPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
 
+            <Image x:Name="AlbumArt"
+                   Aspect="AspectFit"
+                   >              
+            </Image>
+            <ProgressBar x:Name="Progress"/>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         >
+
+                <Button Text="Previous"
+                        Clicked="Button_Clicked">
+                </Button>
+                <Button Text="Play/Pause"
+                        Clicked="Button_Clicked_1">
+                </Button>
+                <Button Text="Next"
+                        Clicked="Button_Clicked_2">
+                    
+                </Button>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

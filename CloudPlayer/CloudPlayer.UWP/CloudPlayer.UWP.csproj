@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocalStorage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -155,6 +156,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Client">
       <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="MimeTypesMap">
+      <Version>1.0.8</Version>
     </PackageReference>
     <PackageReference Include="NAudio">
       <Version>1.9.0</Version>

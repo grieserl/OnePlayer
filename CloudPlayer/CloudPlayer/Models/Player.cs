@@ -9,9 +9,12 @@ namespace CloudPlayer.Models
     public class Player
     {
         public List<Queue> Queue { get; set; }
+        public Track NowPlaying { get; set; }
+        public string ArtworkPath { get;set; }
+        
         public interface PlayMusic
         {
-            void Play(string filePath);
+            void Play(string filePath, int position);
             Task<bool> SetVolume(float left, float right);
             int Stop();
             int Pause();
@@ -22,10 +25,11 @@ namespace CloudPlayer.Models
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        public async Task<bool> Play(Track track)
+        public async Task<bool> Play(Track track, int postition = 0)
         {            
             string url = await App.OneDrive.GetTrackURL(track.OneDrive_ID);
-            DependencyService.Get<PlayMusic>().Play(url);
+            DependencyService.Get<PlayMusic>().Play(url, postition);
+            NowPlaying = track;
             return true;
         }
 
@@ -47,8 +51,12 @@ namespace CloudPlayer.Models
         /// <returns></returns>
         public async Task SetQueue(List<Track> tracks, bool shuffle, Track nowPlaying = null)
         {          
+
             await App.Library.ClearQueue();
-            Queue.Clear();
+            if (Queue != null)
+                Queue.Clear();
+            else
+                Queue = new List<Queue>();
             foreach(Track track in tracks)
             {
                 Queue queue = new Queue();
@@ -68,18 +76,23 @@ namespace CloudPlayer.Models
             }
             if (shuffle)
                 Queue = ShuffleList(Queue);
-            await App.Library.AddAllToQueue(Queue);            
+            await App.Library.AddAllToQueue(Queue);
+            if (nowPlaying == null)
+                NowPlaying = tracks[0];
+            else
+                NowPlaying = nowPlaying;
+            await SetArtworkPath(NowPlaying);
         }
 
         /// <summary>
-        ///     IN PROGRESS - Start playing the audio queue
+        ///     Start playing the audio queue
         /// </summary>
         /// <returns></returns>
-        public async Task PlayQueueAsync()
+        public async Task PlayQueue()
         {
-            if(Queue.Count == 0)
+            if(Queue == null || Queue.Count == 0)
             {
-                
+                await SetQueue(await App.Library.GetTracks(), false, null);
             }
             Queue nowPlaying;
 
@@ -88,8 +101,27 @@ namespace CloudPlayer.Models
                 nowPlaying = Queue[0];
 
             List<Track> tracks = await App.Library.GetTrack(nowPlaying.ID);
-            await Play(tracks[0]);
         }
+
+        public async Task CheckInitialization()
+        {
+           if(Queue == null)
+           {
+                await PlayQueue();
+           }
+           if(NowPlaying == null)
+            {
+                Queue queue = Queue.Find(x => x.NowPlaying == true);
+                if(queue == null)
+                {
+                    queue = Queue[0];
+                }
+                List<Track> tracks = await App.Library.GetTrack(queue.ID);
+                NowPlaying = tracks[0];
+
+            }
+        }
+        
 
         /// <summary>
         ///     Used to shuffle the queue
@@ -111,6 +143,15 @@ namespace CloudPlayer.Models
             }
 
             return randomList; //return the new random list
+        }
+
+        public async Task SetArtworkPath(Track track)
+        {
+            List<Album> albums = await App.Library.GetAlbum(track.Album_ID);
+            if (albums.Count > 0)
+                ArtworkPath = albums[0].ArtworkFile;
+            else
+                ArtworkPath = App.LocalStoragePath + "\\AlbumArt\\1.jpeg";
         }
     }
 }

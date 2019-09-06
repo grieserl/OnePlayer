@@ -30,9 +30,10 @@ namespace CloudPlayer.UWP
         ///     Play the audio file located at the filePath
         /// </summary>
         /// <param name="filePath"></param>
-        public void Play(string filePath)
+        public void Play(string filePath, int position)
         {            
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(filePath));           
+            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(filePath));
+            mediaPlayer.PlaybackSession.Position = new TimeSpan(0, 0, 0, 0, position);
             mediaPlayer.Play();
         }  
         public Task<bool> SetVolume(float left, float right)

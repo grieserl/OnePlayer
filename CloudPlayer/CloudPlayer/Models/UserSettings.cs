@@ -8,6 +8,5 @@ namespace CloudPlayer.Models
     {
         public string RemoteMusicPath { get; set; }
         public DateTimeOffset LastCompletedScanDate { get; set; }
-
     }
 }

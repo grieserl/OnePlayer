@@ -18,9 +18,7 @@ namespace CloudPlayer.Models
         public int DiscNumber { get; set; }
         public string FileName { get; set; }
         public string OneDrive_ID { get; set; }
-
         public DateTimeOffset? LastUpdate { get; set; }
-
         public bool KeepOffline { get; set; }
         public Track()
         {

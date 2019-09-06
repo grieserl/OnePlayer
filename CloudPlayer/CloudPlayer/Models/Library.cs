@@ -13,7 +13,7 @@ namespace CloudPlayer.Models
 
         public Library()
         {
-            database = new SQLiteAsyncConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CPLibrary.db3"));
+            database = new SQLiteAsyncConnection(Path.Combine(App.LocalStoragePath, "CPLibrary.db3"));
             database.CreateTableAsync<Track>().Wait();
             database.CreateTableAsync<Artist>().Wait();
             database.CreateTableAsync<Album>().Wait();
@@ -89,9 +89,19 @@ namespace CloudPlayer.Models
                     Inner Join [Artist] on [Album].AlbumArtist_ID = [Artist].ID where [Artist].Name = '{artistName}' and [Album].Title = '{title}'");
         }
 
-        public async Task SaveAlbum(Album album)
+        public async Task InsertAlbum(Album album)
         {
             await database.InsertAsync(album);
+        }
+
+        public async Task UpdateAlbum(Album album)
+        {
+            await database.UpdateAsync(album);
+        }
+
+        public  async Task<List<Album>> GetAlbum(int? ID)
+        {
+            return await database.QueryAsync<Album>($"Select * from [Album] Where ID = {ID}");
         }
         #endregion
 

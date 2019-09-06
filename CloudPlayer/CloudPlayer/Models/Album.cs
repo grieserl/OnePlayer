@@ -9,8 +9,9 @@ namespace CloudPlayer.Models
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; }        
         public int AlbumArtist_ID { get; set; }
+        public string ArtworkFile { get; set; }
         public bool KeepOffline { get; set; }
 
     }
