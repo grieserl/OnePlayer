@@ -39,11 +39,14 @@ namespace CloudPlayer.Views
         {
             if (e.Item == null)
                 return;
+            await App.Player.SetQueue(Items.ToList<Track>(), e.ItemIndex, 0);
 
-            await App.Player.Play((Track)e.Item);
+            await App.Player.Play();
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
+
+            await Navigation.PushAsync(new NowPlayingPage());
         }
 
         public async Task SetList()
@@ -60,8 +63,8 @@ namespace CloudPlayer.Views
 
         private async void PlayAll(object sender, EventArgs e)
         {
-            //App.Player.SetQueue(Items.ToList(), false);
-            //await App.Player.PlayQueue();
+            await App.Player.SetQueue(Items.ToList());
+            await App.Player.Play();
         }
 
         private async void ShuffleAll(object sender, EventArgs e)

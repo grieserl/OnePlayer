@@ -30,6 +30,15 @@ namespace CloudPlayer.Models
             return true;
         }
 
+        public async Task<bool> Play()
+        {
+            QueueItem queueItem = await GetNowPlaying();
+           
+            string url = await App.OneDrive.GetTrackURL((await queueItem.GetTrack()).OneDrive_ID);
+            DependencyService.Get<PlayMusic>().Play(url, queueItem.Position);
+            return true;
+        }
+
         /// <summary>
         ///     Load the audio queue from the library
         /// </summary>
