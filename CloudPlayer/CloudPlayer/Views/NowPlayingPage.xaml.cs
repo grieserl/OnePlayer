@@ -41,7 +41,10 @@ namespace CloudPlayer.Views
 
         private async void Play(object sender, EventArgs e)
         {
-            await App.Player.Play();
+            if (!App.Player.IsPlaying())
+                await App.Player.Play();
+            else
+                await App.Player.Pause();
         }
 
         private async void Next(object sender, EventArgs e)

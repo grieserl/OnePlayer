@@ -139,9 +139,22 @@ namespace CloudPlayer.Models
                 await Play();
         }
 
-        private Task Stop()
+        public async Task Stop()
         {
-            throw new NotImplementedException();
+            DependencyService.Get<PlayMusic>().Stop();
+            QueueItem nowPlaying = await GetNowPlaying();
+            int i = Queue.IndexOf(nowPlaying);
+            Queue[i].Position = 0;
+            PlayerState = StateStopped;
+        }
+
+        public async Task Pause()
+        {
+            int postition = DependencyService.Get<PlayMusic>().Pause();
+            QueueItem nowPlaying = await GetNowPlaying();
+            int i = Queue.IndexOf(nowPlaying);
+            Queue[i].Position = postition;
+            PlayerState = StatePaused;
         }
 
         public async Task<QueueItem> GetNowPlaying()
@@ -193,6 +206,21 @@ namespace CloudPlayer.Models
             }
 
             return randomList; //return the new random list
+        }
+
+        public bool IsPlaying()
+        {
+            return PlayerState == StatePlaying;
+        }
+
+        public bool IsPaused()
+        {
+            return PlayerState == StatePaused;
+        }
+
+        public bool IsStopped()
+        {
+            return PlayerState == StateStopped;
         }
     }
 }
