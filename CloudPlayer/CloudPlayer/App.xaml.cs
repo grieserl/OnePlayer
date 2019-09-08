@@ -22,6 +22,7 @@ namespace CloudPlayer
         public static OneDrive OneDrive { get; set; }
         public static string LocalStoragePath { get; set; }
 
+        
 
 
 
@@ -45,6 +46,7 @@ namespace CloudPlayer
             Player = new Player();
             OneDrive = new OneDrive();
             await OneDrive.GetToken();
+            Player.PlayerState = Player.StateStopped;
             Player.GetNowPlaying();
             
         }

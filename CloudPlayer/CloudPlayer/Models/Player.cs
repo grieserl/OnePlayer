@@ -8,7 +8,13 @@ namespace CloudPlayer.Models
 {
     public class Player
     {
-        public List<QueueItem> Queue { get; set; }        
+        public const string StatePlaying = "playing";
+        public const string StateStopped = "stopped";
+        public const string StatePaused = "paused";
+
+        public List<QueueItem> Queue { get; set; }
+        public bool RepeatAll { get; set; } = true;
+        public string PlayerState { get; set; }
 
         public Player()
         {
@@ -17,7 +23,7 @@ namespace CloudPlayer.Models
 
         private void PlaybackCompleted(object sender, EventArgs e)
         {
-           GetNowPlaying().Wait();
+            Next().Wait();
         }
 
         public interface PlayMusic
@@ -40,6 +46,7 @@ namespace CloudPlayer.Models
         {            
             string url = await App.OneDrive.GetTrackURL(track.OneDrive_ID);
             DependencyService.Get<PlayMusic>().Play(url, postition);
+            PlayerState = StatePlaying;
             return true;
         }
 
@@ -49,6 +56,7 @@ namespace CloudPlayer.Models
            
             string url = await App.OneDrive.GetTrackURL((await queueItem.GetTrack()).OneDrive_ID);
             DependencyService.Get<PlayMusic>().Play(url, queueItem.Position);
+            PlayerState = StatePlaying;
             return true;
         }
 
@@ -91,6 +99,49 @@ namespace CloudPlayer.Models
         public async Task SetQueue()
         {
             await SetQueue(await App.Library.GetTracks());
+        }
+
+        public async Task Next()
+        {
+            QueueItem nowPlaying = await GetNowPlaying();
+            int i = Queue.IndexOf(nowPlaying);
+            Queue[i].NowPlaying = false;
+            Queue[i].Position = 0;
+            if (Queue.Count <= i + 1)
+            {
+                if (RepeatAll)
+                    Queue[0].NowPlaying = true;
+                else
+                    await Stop();
+            }
+            else
+                Queue[i + 1].NowPlaying = true;
+            if(PlayerState == StatePlaying)
+                await Play();
+        }
+
+        public async Task Previous()
+        {
+            QueueItem nowPlaying = await GetNowPlaying();
+            int i = Queue.IndexOf(nowPlaying);
+            Queue[i].NowPlaying = false;
+            Queue[i].Position = 0;
+            if (i == 0)
+            {
+                if (RepeatAll)
+                    Queue[Queue.Count - 1].NowPlaying = true;
+                else
+                    await Stop();
+            }
+            else
+                Queue[i - 1].NowPlaying = true;
+            if (PlayerState == StatePlaying)
+                await Play();
+        }
+
+        private Task Stop()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<QueueItem> GetNowPlaying()

@@ -18,13 +18,13 @@
                          >
 
                 <Button Text="Previous"
-                        Clicked="Button_Clicked">
+                        Clicked="Previous">
                 </Button>
                 <Button Text="Play/Pause"
-                        Clicked="Button_Clicked_1">
+                        Clicked="Play">
                 </Button>
                 <Button Text="Next"
-                        Clicked="Button_Clicked_2">
+                        Clicked="Next">
                     
                 </Button>
             </StackLayout>

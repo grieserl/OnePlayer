@@ -24,11 +24,6 @@ namespace CloudPlayer.Views
             AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", (await App.Player.GetNowPlaying()).AlbumArtPath));
         }
 
-        public async Task Play()
-        {
-           
-        }
-
         public void SetAlbumArt()
         {
             AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt\\1.jpeg"));
@@ -39,19 +34,19 @@ namespace CloudPlayer.Views
             Progress.ProgressTo(.5, 1000, Easing.Linear);
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Previous(object sender, EventArgs e)
         {
-
+            await App.Player.Previous();
         }
 
-        private async void Button_Clicked_1(object sender, EventArgs e)
+        private async void Play(object sender, EventArgs e)
         {
-            await Play();
+            await App.Player.Play();
         }
 
-        private void Button_Clicked_2(object sender, EventArgs e)
+        private async void Next(object sender, EventArgs e)
         {
-
+            await App.Player.Next();
         }
     }       
 }
