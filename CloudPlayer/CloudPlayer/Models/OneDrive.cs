@@ -71,7 +71,7 @@ namespace CloudPlayer.Models
         {
             try
             {
-                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("STP/").Children.Request().GetAsync();
+                IDriveItemChildrenCollectionPage driveItems = await GraphClient.Me.Drive.Root.ItemWithPath("Music/Pop Evil").Children.Request().GetAsync();
                 
                 foreach (var item in driveItems)
                 {

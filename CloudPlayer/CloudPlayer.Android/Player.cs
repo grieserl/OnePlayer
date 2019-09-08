@@ -28,7 +28,15 @@ namespace CloudPlayer.Droid
         public PlayMusic_Android()
         {
             mediaPlayer = new MediaPlayer();
+            mediaPlayer.Completion += MediaPlayer_Completion;
         }
+
+        private void MediaPlayer_Completion (object sender, EventArgs e)
+        {
+            playbackCompleted.Invoke(sender, e);
+        }
+
+        public event EventHandler playbackCompleted;
 
         /// <summary>
         ///     Play the audio file located at the filePath
@@ -36,6 +44,7 @@ namespace CloudPlayer.Droid
         /// <param name="filePath"></param>
         public void Play(string filePath, int position)
         {
+            
             if (mediaPlayer.IsPlaying)
                 mediaPlayer.Reset();
             mediaPlayer.SetDataSource(filePath);
@@ -46,6 +55,7 @@ namespace CloudPlayer.Droid
 
 
         }
+
 
         public Task<bool> SetVolume(float left, float right)
         {

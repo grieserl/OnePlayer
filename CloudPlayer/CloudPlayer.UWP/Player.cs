@@ -24,6 +24,14 @@ namespace CloudPlayer.UWP
         public PlayMusic_UWP()
         {
             mediaPlayer = new MediaPlayer();
+            mediaPlayer.MediaEnded += MediaPlayer_Completion;
+        }
+
+        public event EventHandler playbackCompleted;
+
+        private void MediaPlayer_Completion(MediaPlayer sender, object e)
+        {
+            playbackCompleted.Invoke(sender, null);
         }
 
         /// <summary>

@@ -9,13 +9,26 @@ namespace CloudPlayer.Models
     public class Player
     {
         public List<QueueItem> Queue { get; set; }        
-        
+
+        public Player()
+        {
+            DependencyService.Get<PlayMusic>().playbackCompleted += PlaybackCompleted;
+        }
+
+        private void PlaybackCompleted(object sender, EventArgs e)
+        {
+           GetNowPlaying().Wait();
+        }
+
         public interface PlayMusic
         {
             void Play(string filePath, int position);
             Task<bool> SetVolume(float left, float right);
             int Stop();
             int Pause();
+
+            event EventHandler playbackCompleted;
+            
         }
 
         /// <summary>
