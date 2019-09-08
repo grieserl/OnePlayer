@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CloudPlayer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,19 +23,31 @@ namespace CloudPlayer.Views
             
         }
         
-        private void SongChange(Object Sender,EventArgs e)
+        private async void SongChange(Object Sender,EventArgs e)
         {
-            SetAlbumArt().Wait();
+            await SetAlbumArt();
+            await SetTrackInfo();
         }
 
         protected override async void OnAppearing()
         {
             await SetAlbumArt();
+            //await SetTrackInfo();
         }
 
         public async Task SetAlbumArt()
         {
             AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", (await App.Player.GetNowPlaying()).AlbumArtPath));
+        }
+        public async Task SetTrackInfo()
+        {
+            QueueItem nowPlaying = await App.Player.GetNowPlaying();
+            Track track = await nowPlaying.GetTrack();
+            Title.Text = track.Title;
+            Artist artist = await track.GetArtist();
+            Artist.Text = artist.Name;
+            Album album = await track.GetAlbum();
+            Album.Text = album.Title;
         }
 
         public void UpdateProgress()

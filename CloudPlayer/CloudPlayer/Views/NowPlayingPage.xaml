@@ -13,6 +13,18 @@
                    >              
             </Image>
             <ProgressBar x:Name="Progress"/>
+            <Label x:Name="Title"
+                   HorizontalOptions="Center"
+                   >
+            </Label>
+            <Label x:Name="Artist"
+                   HorizontalOptions="Center"
+                   >
+            </Label>
+            <Label x:Name="Album"
+                   HorizontalOptions="Center"
+                   >                
+            </Label>
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
                          >

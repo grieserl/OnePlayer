@@ -79,6 +79,10 @@ namespace CloudPlayer.Models
             await database.InsertAsync(artist);      
         }
 
+        public async Task<List<Artist>> GetArtist(int id)
+        {
+            return await database.QueryAsync<Artist>($@"Select * from [Artist] where ID = {id}");
+        }
         #endregion
 
         #region [Album]

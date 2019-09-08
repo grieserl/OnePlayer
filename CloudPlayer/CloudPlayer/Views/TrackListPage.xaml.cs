@@ -41,12 +41,13 @@ namespace CloudPlayer.Views
                 return;
             await App.Player.SetQueue(Items.ToList<Track>(), e.ItemIndex, 0);
 
-            await App.Player.Play();
+            
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
 
             await Navigation.PushAsync(new NowPlayingPage());
+            await App.Player.Play();
         }
 
         public async Task SetList()

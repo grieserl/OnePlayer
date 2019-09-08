@@ -46,6 +46,7 @@ namespace CloudPlayer.Models
         public async Task<bool> Play(Track track, int postition = 0)
         {            
             string url = await App.OneDrive.GetTrackURL(track.OneDrive_ID);
+            SongChanged.Invoke(this, null);
             DependencyService.Get<PlayMusic>().Play(url, postition);
             PlayerState = StatePlaying;
             return true;
@@ -56,6 +57,7 @@ namespace CloudPlayer.Models
             QueueItem queueItem = await GetNowPlaying();
            
             string url = await App.OneDrive.GetTrackURL((await queueItem.GetTrack()).OneDrive_ID);
+            SongChanged.Invoke(this, null);
             DependencyService.Get<PlayMusic>().Play(url, queueItem.Position);
             PlayerState = StatePlaying;
             return true;
@@ -137,6 +139,7 @@ namespace CloudPlayer.Models
             }
             else
                 Queue[i - 1].NowPlaying = true;
+            SongChanged.Invoke(this, null);
             if (PlayerState == StatePlaying)
                 await Play();
             
