@@ -15,6 +15,7 @@ namespace CloudPlayer.Models
         public List<QueueItem> Queue { get; set; }
         public bool RepeatAll { get; set; } = true;
         public string PlayerState { get; set; }
+        public event EventHandler SongChanged;
 
         public Player()
         {
@@ -116,6 +117,7 @@ namespace CloudPlayer.Models
             }
             else
                 Queue[i + 1].NowPlaying = true;
+            SongChanged.Invoke(this, null);
             if(PlayerState == StatePlaying)
                 await Play();
         }
@@ -137,6 +139,7 @@ namespace CloudPlayer.Models
                 Queue[i - 1].NowPlaying = true;
             if (PlayerState == StatePlaying)
                 await Play();
+            
         }
 
         public async Task Stop()

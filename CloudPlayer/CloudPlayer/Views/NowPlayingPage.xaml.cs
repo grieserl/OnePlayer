@@ -13,20 +13,28 @@ namespace CloudPlayer.Views
     public partial class NowPlayingPage : ContentPage
     {
 
+        public event EventHandler songChange;
+
         public NowPlayingPage()
         {
-            InitializeComponent();          
+            InitializeComponent();
+            App.Player.SongChanged += SongChange;
             
+        }
+        
+        private void SongChange(Object Sender,EventArgs e)
+        {
+            SetAlbumArt().Wait();
         }
 
         protected override async void OnAppearing()
         {
-            AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", (await App.Player.GetNowPlaying()).AlbumArtPath));
+            await SetAlbumArt();
         }
 
-        public void SetAlbumArt()
+        public async Task SetAlbumArt()
         {
-            AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt\\1.jpeg"));
+            AlbumArt.Source = ImageSource.FromFile(System.IO.Path.Combine(App.LocalStoragePath, "AlbumArt", (await App.Player.GetNowPlaying()).AlbumArtPath));
         }
 
         public void UpdateProgress()
